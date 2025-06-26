@@ -1,0 +1,82 @@
+
+.course-card {
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    }
+  }
+  
+  mat-card-header {
+    margin-bottom: 12px;
+  }
+  
+  .subtitle-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4px;
+    
+    .time {
+      font-weight: 500;
+    }
+  }
+  
+  mat-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .description {
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+  
+  .details {
+    margin-bottom: 16px;
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      
+      mat-icon {
+        margin-right: 8px;
+        color: #1976d2;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  
+  .status-chips {
+    margin-bottom: 12px;
+  }
+  
+  .full {
+    color: #f44336;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 599px) {
+    mat-card-header {
+      padding-top: 12px;
+    }
+  }
+
+  .clickable-chip {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-chip:hover {
+  background-color: #ffb74d; /* Slightly lighter shade for accent chip */
+}
+
+

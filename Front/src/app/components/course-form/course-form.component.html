@@ -1,0 +1,120 @@
+
+<div class="form-container">
+    <header class="page-header">
+      <h1>{{ isEditMode ? 'Edit Course' : 'Add New Course' }}</h1>
+      <p class="subtitle">{{ isEditMode ? 'Update the course details below' : 'Fill in the details to create a new swimming course' }}</p>
+    </header>
+  
+    <div *ngIf="loading$ | async" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Loading...</span>
+    </div>
+  
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" *ngIf="!(loading$ | async)">
+      <div class="form-fields">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Course Title</mat-label>
+          <input matInput formControlName="title" placeholder="e.g. Beginner Swimming Lessons">
+          <mat-error *ngIf="courseForm.get('title')?.invalid">{{ getErrorMessage('title') }}</mat-error>
+        </mat-form-field>
+        
+                  <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Level</mat-label>
+            <mat-select formControlName="level">
+              <mat-option value="beginner">Beginner</mat-option>
+              <mat-option value="intermediate">Intermediate</mat-option>
+              <mat-option value="professional">Professional</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea 
+            matInput 
+            formControlName="description" 
+            placeholder="Describe what the course offers" 
+            rows="4">
+          </textarea>
+          <mat-error *ngIf="courseForm.get('description')?.invalid">{{ getErrorMessage('description') }}</mat-error>
+        </mat-form-field>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input 
+              matInput 
+              [matDatepicker]="picker" 
+              formControlName="date"
+              [min]="minDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="courseForm.get('date')?.invalid">{{ getErrorMessage('date') }}</mat-error>
+          </mat-form-field>
+  
+          <div class="time-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Time</mat-label>
+              <input 
+                matInput 
+                formControlName="startTime" 
+                placeholder="HH:MM"
+                pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$">
+              <mat-error *ngIf="courseForm.get('startTime')?.invalid">{{ getErrorMessage('startTime') }}</mat-error>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>End Time</mat-label>
+              <input 
+                matInput 
+                formControlName="endTime" 
+                placeholder="HH:MM"
+                pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$">
+              <mat-error *ngIf="courseForm.get('endTime')?.invalid">{{ getErrorMessage('endTime') }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="time-range-error" *ngIf="hasTimeRangeError()">
+          <mat-error>End time must be after start time</mat-error>
+        </div>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="location-field">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location" placeholder="Select location">
+              <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="courseForm.get('location')?.invalid">{{ getErrorMessage('location') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="places-field">
+            <mat-label>Total Places</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              formControlName="totalPlaces" 
+              min="1" 
+              max="100">
+            <mat-error *ngIf="courseForm.get('totalPlaces')?.invalid">{{ getErrorMessage('totalPlaces') }}</mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button 
+          mat-button 
+          type="button" 
+          (click)="onCancel()">
+          Cancel
+        </button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="courseForm.invalid">
+          {{ isEditMode ? 'Update Course' : 'Create Course' }}
+        </button>
+      </div>
+    </form>
+  </div>

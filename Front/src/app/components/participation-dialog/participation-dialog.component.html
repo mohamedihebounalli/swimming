@@ -1,0 +1,176 @@
+<h2 mat-dialog-title>Participer au cours</h2>
+
+<mat-dialog-content>
+
+  <!-- ✅ Cas INTERMEDIATE avec stepper -->
+  <ng-container *ngIf="course.level === 'intermediate'; else simpleForm">
+    <mat-horizontal-stepper linear #stepper>
+
+      <!-- Étape 1 : Données personnelles -->
+      <mat-step [stepControl]="participationForm">
+        <form [formGroup]="participationForm">
+          <ng-template matStepLabel>Informations personnelles</ng-template>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="nom" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Prénom</mat-label>
+              <input matInput formControlName="prenom" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Téléphone</mat-label>
+              <input matInput formControlName="phone" type="tel" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Âge</mat-label>
+              <input matInput formControlName="age" type="number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="third-width">
+              <mat-label>Niveau</mat-label>
+              <input matInput [value]="course.level" disabled />
+            </mat-form-field>
+          </div>
+
+          <div class="step-actions">
+            <button mat-button (click)="cancel()">Annuler</button>
+            <span class="spacer"></span>
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!participationForm.valid">
+              Suivant
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Étape 2 : Questionnaire natation -->
+      <mat-step [stepControl]="quizForm">
+        <form [formGroup]="quizForm">
+          <ng-template matStepLabel>Questionnaire natation</ng-template>
+
+          <mat-form-field class="full-width">
+            <mat-label>Sais-tu nager ?</mat-label>
+            <mat-select formControlName="knowSwimming">
+              <mat-option value="yes">Oui</mat-option>
+              <mat-option value="no">Non</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Combien de longueurs peux-tu faire sans t'arrêter ?</mat-label>
+            <input matInput type="number" formControlName="lengths" />
+          </mat-form-field>
+
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Précédent</button>
+            <span class="spacer"></span>
+            <button mat-raised-button color="primary" (click)="submit()" [disabled]="!quizForm.valid">
+              Participer
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+    </mat-horizontal-stepper>
+  </ng-container>
+
+  <!-- ✅ Cas BEGINNER ou PROFESSIONAL -->
+  <ng-template #simpleForm>
+    <form [formGroup]="participationForm">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nom" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="prenom" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="phone" type="tel" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Âge</mat-label>
+          <input matInput formControlName="age" type="number" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Niveau</mat-label>
+          <input matInput [value]="course.level" disabled />
+        </mat-form-field>
+      </div>
+
+      <!-- Certificat (pour les professionnels) -->
+      <div *ngIf="showCertificateUpload">
+        <div class="drag-drop-area"
+             [ngClass]="{
+               'valid': validationStatus === 'success',
+               'invalid': validationStatus === 'error',
+               'loading': validationStatus === 'loading'
+             }"
+             (drop)="onDrop($event)"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (click)="openFilePicker()">
+
+          <ng-container [ngSwitch]="validationStatus">
+            <mat-spinner *ngSwitchCase="'loading'" diameter="40"></mat-spinner>
+            <img *ngSwitchCase="'success'" [src]="previewUrl" class="preview-image" />
+            <img *ngSwitchCase="'error'" [src]="previewUrl" class="preview-image" />
+            <span *ngSwitchDefault>Glissez-déposez ou cliquez pour ajouter un certificat</span>
+          </ng-container>
+
+          <!-- Hidden file input -->
+          <input type="file"
+                 (change)="onFileSelected($event)"
+                 accept=".jpg,.jpeg,.png"
+                 hidden
+                 #fileInput />
+        </div>
+
+        <div class="status-message success" *ngIf="validationStatus === 'success'">
+          ✅ Certificate is valid: it matches the required format and content.
+        </div>
+
+        <div class="status-message error" *ngIf="validationStatus === 'error'">
+          ❌ Certificate is invalid: the file doesn't appear to be a valid certificate.
+        </div>
+
+      </div>
+
+      <div class="step-actions">
+        <button mat-button (click)="cancel()">Annuler</button>
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary"
+                (click)="submit()"
+                [disabled]="!participationForm.valid || !isCertificateValid()">
+          Participer
+        </button>
+      </div>
+    </form>
+  </ng-template>
+
+</mat-dialog-content>

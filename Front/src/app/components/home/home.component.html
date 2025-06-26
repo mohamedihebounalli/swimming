@@ -1,0 +1,39 @@
+
+<div class="home-container">
+    <header class="page-header">
+      <div class="title-container">
+        <h1>Swimming Courses</h1>
+        <p class="subtitle">Discover our upcoming swimming courses and book your spot today!</p>
+      </div>
+      
+      <div class="filter-controls">
+        <mat-slide-toggle
+          [checked]="filter.upcomingOnly"
+          (change)="toggleUpcomingFilter()"
+          color="primary">
+          Show upcoming courses only
+        </mat-slide-toggle>
+      </div>
+    </header>
+  
+    <div *ngIf="loading$ | async" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Loading courses...</span>
+    </div>
+  
+    <ng-container *ngIf="!(loading$ | async)">
+      <div class="courses-grid" *ngIf="(courses$ | async)?.length; else noCourses">
+        <div class="course-item" *ngFor="let course of courses$ | async">
+          <app-course-card [course]="course"></app-course-card>
+        </div>
+      </div>
+  
+      <ng-template #noCourses>
+        <div class="no-courses">
+          <mat-icon>info</mat-icon>
+          <h3>No courses available</h3>
+          <p>{{ filter.upcomingOnly ? 'There are no upcoming swimming courses at the moment.' : 'No swimming courses found.' }}</p>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>

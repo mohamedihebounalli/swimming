@@ -1,0 +1,32 @@
+
+<header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <a routerLink="/">
+          <mat-icon>pool</mat-icon>
+          <span>SwimCourse Manager</span>
+        </a>
+      </div>
+  
+      <nav class="desktop-nav">
+        <ul>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+          <li><a routerLink="/add-course" routerLinkActive="active">Add Course</a></li>
+          <li><a routerLink="/courses-management" routerLinkActive="active">Courses Management</a></li>
+        </ul>
+      </nav>
+  
+      <button class="menu-button" (click)="toggleMenu()" aria-label="Toggle menu">
+        <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  
+    <nav class="mobile-nav" [class.open]="isMenuOpen">
+      <ul>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Home</a></li>
+        <li><a routerLink="/add-course" routerLinkActive="active" (click)="closeMenu()">Add Course</a></li>
+        <li><a routerLink="/my-enrollments" routerLinkActive="active" (click)="closeMenu()">My Enrollments</a></li>
+        <li><a routerLink="/courses-management" routerLinkActive="active" (click)="closeMenu()">Courses Management</a></li>
+      </ul>
+    </nav>
+  </header>
