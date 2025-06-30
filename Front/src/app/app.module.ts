@@ -35,6 +35,9 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 import { ParticipationDialogComponent } from './components/participation-dialog/participation-dialog.component';
 import { ConfirmationEmailComponent } from './components/confirmation-email/confirmation-email.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { NgChartsModule } from 'ng2-charts';
+
 
 
 
@@ -49,10 +52,12 @@ import { MatStepperModule } from '@angular/material/stepper';
     CourseCardComponent,
     ConfirmationDialogComponent,
     ParticipationDialogComponent,
-    ConfirmationEmailComponent
+    ConfirmationEmailComponent,
+    StatisticsComponent
   ],
   imports: [
     MatDialogModule,
+    NgChartsModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,

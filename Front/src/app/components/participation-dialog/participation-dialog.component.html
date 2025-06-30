@@ -3,7 +3,7 @@
 <mat-dialog-content>
 
   <!-- ✅ Cas INTERMEDIATE avec stepper -->
-  <ng-container *ngIf="course.level === 'intermediate'; else simpleForm">
+  <ng-container *ngIf="course.level === 'beginner'; else simpleForm">
     <mat-horizontal-stepper linear #stepper>
 
       <!-- Étape 1 : Données personnelles -->

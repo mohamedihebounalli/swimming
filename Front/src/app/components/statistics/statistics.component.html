@@ -1,0 +1,54 @@
+<div class="stats-container">
+  <h2>📊 Statistiques des Cours</h2>
+
+  <div class="stat-grid">
+    <mat-card>
+      <mat-card-title>Total Cours</mat-card-title>
+      <mat-card-content>{{ totalCourses }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Total Participants</mat-card-title>
+      <mat-card-content>{{ totalEnrolled }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Moyenne / Cours</mat-card-title>
+      <mat-card-content>{{ averageEnrollment }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Cours Complets</mat-card-title>
+      <mat-card-content>{{ fullCourses }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="chart-section">
+    <h3>📊 Participants par Cours</h3>
+    <canvas baseChart
+            [data]="chartData"
+            [type]="'bar'">
+    </canvas>
+  </div>
+
+  <br>
+    <br>
+
+  <div class="chart-row">
+    <div class="chart-half">
+      <h3>🥧 Répartition des Niveaux</h3>
+      <canvas baseChart
+              [data]="levelChartData"
+              [type]="'pie'">
+      </canvas>
+    </div>
+
+    <div class="chart-half">
+      <h3>📈 Participants par Date</h3>
+      <canvas baseChart
+              [data]="lineChartData"
+              [type]="'line'">
+      </canvas>
+    </div>
+  </div>
+</div>
